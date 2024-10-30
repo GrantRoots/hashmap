@@ -2,7 +2,7 @@
 
 class HashMap {
     constructor() {
-        this.array = []
+        this.array = new Array(16)
     }
 
     hash(key) {
@@ -18,16 +18,32 @@ class HashMap {
 
     set(key, value) {
         let newData = [key, value]
-        let index = this.hash(key) % 16
+        let index = this.hash(key) % this.array.length
+        if (index < 0 || index >= array.length) {
+            throw new Error("Trying to access index out of bound");
+        }
         // check if key already exists
         if (this.array[index]) {
             this.array[index] = newData
         }
+
         this.array.splice(index, 0, newData)
+
+        //load factor
+        if (this.length() >= this.array.length * .75) {
+            // re enter all keys into larger array?
+            //store keys
+            let entriesArray = this.entries()
+            this.clear()
+            this.array.length *= 2
+            for (let i = 0; i > entriesArray.array.length; i++) {
+                this.set(entriesArray[i][0], entriesArray[i][0])
+            }
+        }
     }
 
     get(key) {
-        let index = this.hash(key) % 16
+        let index = this.hash(key) % this.array.length
         if (this.array[index][0] === key) {
             return this.array[index][1]
         }
@@ -35,7 +51,7 @@ class HashMap {
     }
 
     has(key) {
-        let index = this.hash(key) % 16
+        let index = this.hash(key) % this.array.length
         if (this.array[index][0] === key) {
             return true
         }
@@ -43,7 +59,7 @@ class HashMap {
     }
 
     remove(key) {
-        let index = this.hash(key) % 16
+        let index = this.hash(key) % this.array.length
         if (this.array[index][0] === key) {
             this.array.splice[index, 1]
             return true
@@ -62,7 +78,7 @@ class HashMap {
     }
 
     clear() {
-        this.array = []
+        this.array = new Array(this.array.length)
     }
 
     keys() {
@@ -98,4 +114,4 @@ class HashMap {
 
 const test = new HashMap()
 
-console.log(test.hash('apple') % 16)
+console.log(test.hash('apple') % 32)
