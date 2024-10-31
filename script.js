@@ -17,26 +17,28 @@ class HashMap {
     }
 
     set(key, value) {
-        let newData = [key, value]
+        let next = null
+        let newData = [key, value, next]
         let index = this.hash(key) % this.array.length
-        if (index < 0 || index >= array.length) {
+        if (index < 0 || index >= this.array.length) {
             throw new Error("Trying to access index out of bound");
         }
-        // check if key already exists
-        if (this.array[index]) {
-            this.array[index] = newData
+
+        // check if bucket is full
+        if (this.array[index] && this.array[index][0] !== key) {
+           // put it in linked list at end
+           this.array[index][2] = newData
+        }
+        else {
+            this.array.splice(index, 1, newData)
         }
 
-        this.array.splice(index, 0, newData)
-
         //load factor
-        if (this.length() >= this.array.length * .75) {
-            // re enter all keys into larger array?
-            //store keys
+        if (this.length() > this.array.length * .75) {
             let entriesArray = this.entries()
             this.clear()
             this.array.length *= 2
-            for (let i = 0; i > entriesArray.array.length; i++) {
+            for (let i = 0; i > entriesArray.length; i++) {
                 this.set(entriesArray[i][0], entriesArray[i][0])
             }
         }
@@ -70,8 +72,17 @@ class HashMap {
     length() {
         let total = 0
         for (let i = 0; i < this.array.length; i++) {
+            //if theres something at the index go through the list
             if (this.array[i]) {
                 total++
+                //check full list
+                let current = this.array[i];
+                let previous = null;
+                while (current[2]) {
+                    total++
+                    previous = current;
+                    current = current[2];
+                }
             }
         }
         return total
@@ -112,6 +123,27 @@ class HashMap {
     }
 }
 
+class Node {
+    constructor() {
+        this.next = null
+    }
+}
+
 const test = new HashMap()
 
-console.log(test.hash('apple') % 32)
+test.set('apple', 'red')
+test.set('banana', 'yellow')
+test.set('carrot', 'orange')
+test.set('dog', 'brown')
+test.set('elephant', 'gray')
+test.set('frog', 'green')
+test.set('grape', 'purple')
+test.set('hat', 'black')
+test.set('ice cream', 'white')
+test.set('jacket', 'blue')
+test.set('kite', 'pink')
+test.set('lion', 'golden')
+
+test.set('moon', 'silver')
+console.log(test.entries())
+console.log(test.array.length)
