@@ -152,11 +152,18 @@ class HashMap {
         return keyArray
     }
 
-    vlaues() {
-        let vlaueArray = []
+    values() {
+        let valueArray = []
         for (let i = 0; i < this.array.length; i++) {
             if (this.array[i]) {
                 valueArray.push(this.array[i][1])
+                let current = this.array[i];
+                let previous = null;
+                while (current[2]) {
+                    previous = current;
+                    current = current[2];
+                    valueArray.push(current[1])
+                }
             }
         }
         return valueArray
@@ -200,4 +207,4 @@ console.log(test.array.length)
 console.log(test.array)
 
 console.log('tests...')
-console.log(test.keys())
+console.log(test.values())
