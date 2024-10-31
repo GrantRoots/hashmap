@@ -97,6 +97,18 @@ class HashMap {
             this.array.splice[index, 1]
             return true
         }
+        if (this.array[index][2]) {
+            let current = this.array[index];
+            let previous = null;
+            while (current[2]) {
+                previous = current;
+                current = current[2];
+                if (current[0] === key) {
+                    previous[2] = null
+                    return true
+                }
+            }
+        }
         return false
     }
 
@@ -181,4 +193,5 @@ console.log(test.array.length)
 console.log(test.array)
 
 console.log('tests...')
-console.log(test.has('hat'))
+console.log(test.remove('hat'))
+console.log(test.array)
