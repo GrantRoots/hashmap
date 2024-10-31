@@ -140,6 +140,13 @@ class HashMap {
         for (let i = 0; i < this.array.length; i++) {
             if (this.array[i]) {
                 keyArray.push(this.array[i][0])
+                let current = this.array[i];
+                let previous = null;
+                while (current[2]) {
+                    previous = current;
+                    current = current[2];
+                    keyArray.push(current[0])
+                }
             }
         }
         return keyArray
@@ -188,10 +195,9 @@ test.set('jacket', 'blue')
 test.set('kite', 'pink')
 test.set('lion', 'golden')
 
-console.log(test.entries())
+console.log(test.entries(), 'entries')
 console.log(test.array.length)
 console.log(test.array)
 
 console.log('tests...')
-console.log(test.remove('hat'))
-console.log(test.array)
+console.log(test.keys())
