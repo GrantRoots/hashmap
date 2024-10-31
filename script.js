@@ -58,6 +58,17 @@ class HashMap {
         if (this.array[index][0] === key) {
             return this.array[index][1]
         }
+        if (this.array[index][2]) {
+            let current = this.array[index][2];
+            let previous = null;
+            while (current[2]) {
+                previous = current;
+                current = current[2];
+                if (current[0] === key) {
+                    return current[1]
+                }
+            }
+        }
         return null
     }
 
@@ -154,7 +165,6 @@ test.set('jacket', 'blue')
 test.set('kite', 'pink')
 test.set('lion', 'golden')
 
-test.set('moon', 'silver')
 console.log(test.entries())
 console.log(test.array.length)
 console.log(test.array)
