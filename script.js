@@ -38,8 +38,17 @@ class HashMap {
             let entriesArray = this.entries()
             this.clear()
             this.array.length *= 2
-            for (let i = 0; i > entriesArray.length; i++) {
-                this.set(entriesArray[i][0], entriesArray[i][0])
+            //re input all values into new array
+            for (let i = 0; i < entriesArray.length; i++) {
+                this.set(entriesArray[i][0], entriesArray[i][1])
+
+                let current = entriesArray[i];
+                let previous = null;
+                while (current[2]) {
+                    previous = current;
+                    current = current[2];
+                    this.set(current[0], current[1])
+                }
             }
         }
     }
@@ -117,15 +126,16 @@ class HashMap {
         for (let i = 0; i < this.array.length; i++) {
             if (this.array[i]) {
                 entryArray.push(this.array[i])
+                let current = this.array[i];
+                let previous = null;
+                while (current[2]) {
+                    previous = current;
+                    current = current[2];
+                    entryArray.push(current)
+                }
             }
         }
         return entryArray
-    }
-}
-
-class Node {
-    constructor() {
-        this.next = null
     }
 }
 
@@ -147,3 +157,4 @@ test.set('lion', 'golden')
 test.set('moon', 'silver')
 console.log(test.entries())
 console.log(test.array.length)
+console.log(test.array)
