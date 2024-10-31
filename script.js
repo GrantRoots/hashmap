@@ -59,7 +59,7 @@ class HashMap {
             return this.array[index][1]
         }
         if (this.array[index][2]) {
-            let current = this.array[index][2];
+            let current = this.array[index];
             let previous = null;
             while (current[2]) {
                 previous = current;
@@ -76,6 +76,17 @@ class HashMap {
         let index = this.hash(key) % this.array.length
         if (this.array[index][0] === key) {
             return true
+        }
+        if (this.array[index][2]) {
+            let current = this.array[index];
+            let previous = null;
+            while (current[2]) {
+                previous = current;
+                current = current[2];
+                if (current[0] === key) {
+                    return true
+                }
+            }
         }
         return false
     }
@@ -168,3 +179,6 @@ test.set('lion', 'golden')
 console.log(test.entries())
 console.log(test.array.length)
 console.log(test.array)
+
+console.log('tests...')
+console.log(test.has('hat'))
